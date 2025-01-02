@@ -3,6 +3,8 @@
 ## Overview
 This monitoring system provides comprehensive monitoring capabilities for WebLogic Server environments, generating HTML reports with detailed information about server status, heap usage, JDBC connections, and JMS resources. The system automatically sends email notifications with color-coded alerts based on the server's health status.
 
+<img src="weblogic-logo.png" alt="WebLogic Logo" width="500">
+
 ## Features
 - Server status monitoring (state and health)
 - JVM heap usage analysis

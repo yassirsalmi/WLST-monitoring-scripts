@@ -88,60 +88,80 @@ def monitor_jms(fo):
     servers = domainRuntimeService.getServerRuntimes()
     
     for server in servers:
+        fo.write('<h3>JMS Runtime Info for: %s</h3>' % server.getName())
+        fo.write('<table border="1" style="width:100%">')
+        fo.write('''<tr bgcolor="#4477BB">
+            <th>SERVER</th>
+            <th>JMSSERVER</th>
+            <th>DestinationName</th>
+            <th>DestinationType</th>
+            <th>MessagesCurrentCount</th>
+            <th>MessagesHighCount</th>
+            <th>ConsumersCurrentCount</th>
+            <th>ConsumersHighCount</th>
+            <th>ConsumersTotalCount</th>
+            </tr>''')
+        
         try:
             jms_runtime = server.getJMSRuntime()
-            jms_servers = jms_runtime.getJMSServers()
+            jms_servers = jms_runtime.getJMSServers() if jms_runtime else []
             
-            if jms_servers:
-                fo.write('<h3>JMS Runtime Info for: %s</h3>' % server.getName())
-                fo.write('<table border="1" style="width:100%">')
-                fo.write('''<tr bgcolor="#4477BB">
-                    <th>SERVER</th>
-                    <th>JMSSERVER</th>
-                    <th>DestinationName</th>
-                    <th>DestinationType</th>
-                    <th>MessagesCurrentCount</th>
-                    <th>MessagesHighCount</th>
-                    <th>ConsumersCurrentCount</th>
-                    <th>ConsumersHighCount</th>
-                    <th>ConsumersTotalCount</th>
-                    </tr>''')
-                
+            if jms_servers and len(jms_servers) > 0:
                 row_count = 0
                 for jms_server in jms_servers:
-                    for dest in jms_server.getDestinations():
-                        bgcolor = '#F4F6FA' if row_count % 2 == 0 else '#E6E6FA'
-                        
-                        dest_name = dest.getName()
-                        full_path = 'UMSJMSSystemResource/UMSJMSServer_auto_2@dist_OraSDP/Queues/' + dest_name
-                        
-                        fo.write('<tr bgcolor="%s">' % bgcolor)
+                    destinations = jms_server.getDestinations()
+                    if destinations and len(destinations) > 0:
+                        for dest in destinations:
+                            bgcolor = '#F4F6FA' if row_count % 2 == 0 else '#E6E6FA'
+                            dest_name = dest.getName()
+                            
+                            fo.write('<tr bgcolor="%s">' % bgcolor)
+                            fo.write('''<td>%s</td>
+                                <td>%s</td>
+                                <td>%s</td>
+                                <td>%s</td>
+                                <td>%d</td>
+                                <td>%d</td>
+                                <td>%d</td>
+                                <td>%d</td>
+                                <td>%d</td>''' % (
+                                server.getName(),
+                                jms_server.getName(),
+                                dest_name,
+                                dest.getDestinationType(),
+                                dest.getMessagesCurrentCount(),
+                                dest.getMessagesHighCount(),
+                                dest.getConsumersCurrentCount(),
+                                dest.getConsumersHighCount(),
+                                dest.getConsumersTotalCount()
+                            ))
+                            fo.write('</tr>')
+                            row_count += 1
+                    else:
+                        fo.write('<tr bgcolor="#F4F6FA">')
                         fo.write('''<td>%s</td>
                             <td>%s</td>
-                            <td>%s</td>
-                            <td>%s</td>
-                            <td>%d</td>
-                            <td>%d</td>
-                            <td>%d</td>
-                            <td>%d</td>
-                            <td>%d</td>''' % (
+                            <td colspan="7">No destinations found for this JMS server</td>''' % (
                             server.getName(),
-                            jms_server.getName(),
-                            full_path,
-                            dest.getDestinationType(),
-                            dest.getMessagesCurrentCount(),
-                            dest.getMessagesHighCount(),
-                            dest.getConsumersCurrentCount(),
-                            dest.getConsumersHighCount(),
-                            dest.getConsumersTotalCount()
+                            jms_server.getName()
                         ))
                         fo.write('</tr>')
-                        row_count += 1
-                fo.write('</table>')
             else:
-                fo.write('<p>No JMS Information For %s</p>' % server.getName())
+                fo.write('<tr bgcolor="#F4F6FA">')
+                fo.write('''<td>%s</td>
+                    <td colspan="8">No JMS servers found</td>''' % server.getName())
+                fo.write('</tr>')
+                
         except Exception as e:
-            fo.write('<p>Error retrieving JMS information for %s: %s</p>' % (server.getName(), str(e)))
+            fo.write('<tr bgcolor="#F4F6FA">')
+            fo.write('''<td>%s</td>
+                <td colspan="8">Error retrieving JMS information: %s</td>''' % (
+                server.getName(),
+                str(e)
+            ))
+            fo.write('</tr>')
+        
+        fo.write('</table>')
 
 def get_jms_destination_path(server_name, jms_server_name, destination_name):
     """Helper function to construct the full JMS destination path"""

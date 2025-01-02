@@ -48,17 +48,17 @@ do
     #----------------------------------------
     # Set email subject
     #----------------------------------------
-    grep "yellow" ${SCRIPT_PATH}/monitorstatus.html >> /dev/null
+    grep "#FFFF00" ${SCRIPT_PATH}/monitorstatus.html >> /dev/null
     if [ $? == 0 ]; then
         ALERT_CODE="[WARNING]"
     fi
 
-    grep "red" ${SCRIPT_PATH}/monitorstatus.html >> /dev/null
+    grep "#FFB6C6" ${SCRIPT_PATH}/monitorstatus.html >> /dev/null
     if [ $? == 0 ]; then
         ALERT_CODE="[CRITICAL]"
     fi
 
-    grep "green" ${SCRIPT_PATH}/monitorstatus.html >> /dev/null
+    grep "#90EE90" ${SCRIPT_PATH}/monitorstatus.html >> /dev/null
     if [ $? == 0 ]; then
         ALERT_CODE="[GREEN]"
     fi
