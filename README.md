@@ -45,7 +45,7 @@ $MW_HOME/
 
 2. Update WebLogic credentials in `monitor_all_servers.py`:
    ```python
-   connect('webLogic', 'your_password', 't3://%s:%s' % (sys.argv[1], sys.argv[2]))yassir
+   connect('webLogic', 'your_password', 't3://%s:%s' % (sys.argv[1], sys.argv[2]))
    ```
 
 ## Monitoring Components
