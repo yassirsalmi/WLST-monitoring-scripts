@@ -5,24 +5,24 @@
 ##############################################
 
 # Oracle Middleware environment variables
-export MW_HOME=/home/yassir/Oracle/Middleware/Oracle_Home
+export MW_HOME=/home/username/Oracle/Middleware/Oracle_Home
 export DOMAIN_HOME=$MW_HOME/user_projects/domains/test_domain
 
 # security manager options
 export JAVA_OPTIONS="-Djava.security.manager -Djava.security.policy=$MW_HOME/wlserver/server/lib/weblogic.policy ${JAVA_OPTIONS}"
 
-$MW_HOME/oracle_common/common/bin/wlst.sh /home/yassir/oracle/scripts/wlst/monitor_all_servers.py
+$MW_HOME/oracle_common/common/bin/wlst.sh /home/username/oracle/scripts/wlst/monitor_all_servers.py
 
 
 #----------------------------------------
 # Variables
 #----------------------------------------
-ENV=PROD12C
-ORACLE_HOME=~/Oracle/Middleware/Oracle_Home
-SCRIPT_PATH=/home/yassir/oracle/scripts/wlst
+export MW_HOME=/home/username/Oracle/Middleware/Oracle_Home
+export DOMAIN_HOME=$MW_HOME/user_projects/domains/test_domain
+SCRIPT_PATH=/home/username/oracle/scripts/wlst
 SERVERS=webLogic
 PORT=7001
-EMAILS="yssr1949@gmail.com"  
+EMAILS="your.email@example.com"
 
 #----------------------------------------
 # Set environment
